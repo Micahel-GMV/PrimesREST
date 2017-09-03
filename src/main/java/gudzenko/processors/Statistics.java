@@ -37,7 +37,7 @@ public class Statistics extends Thread {
                 curTime = System.currentTimeMillis();
                 timeDiff = curTime - previousTime;
                 System.out.print(diff + " tasks were sent for processing in " + timeDiff + " millis. ");
-                System.out.println("Performance is " + ((double)diff/timeDiff) + " tasks/milisec.");
+                System.out.println("Performance is " + (1000*(double)diff/timeDiff) + " tasks/sec.");
             }
         }
     }

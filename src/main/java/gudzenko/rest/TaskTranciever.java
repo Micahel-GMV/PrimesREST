@@ -2,6 +2,10 @@ package gudzenko.rest;
 
 import gudzenko.taskset.ITaskSet;
 
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.WebResource;
+
 public class TaskTranciever extends Thread {//Gets number from tasks.tasks and sends it for processing to
                                             //http://api.mathjs.org/v1/?expr=isPrime(41), recievs answer and decides
                                             //which result set in tasks to be replenished with this number.
@@ -12,21 +16,26 @@ public class TaskTranciever extends Thread {//Gets number from tasks.tasks and s
         this.tasks = tasks;
     }
 
-    private TrancieverResults process(int i){// It`s dummy for send-recieve operations.
-                                //
-        int modulo = i%3;
-        try {
-            sleep(1000);
-        } catch (InterruptedException e) {
-            modulo = -1;
-            System.out.println("Task processor is interrupted.");
+    public TrancieverResults process(int i){
+        TrancieverResults result = TrancieverResults.ERROR;
+        try
+        {
+            Client client = Client.create();
+            String resourceUrl = "http://api.mathjs.org/v1/?expr=isPrime(" + i + ")";
+            WebResource webResource = client
+                    .resource(resourceUrl);
+            ClientResponse response = webResource.accept("application/json")
+                    .get(ClientResponse.class);
+
+            if (response.getStatus() == 200) {
+                String output = response.getEntity(String.class);
+                if (output.equals("true")) result = TrancieverResults.PRIME;
+                else if (output.equals("false")) result = TrancieverResults.NOTPRIME;
+            }
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        switch (modulo){
-            case 0: return TrancieverResults.EVEN;
-            case 1: return TrancieverResults.ODD;
-            default: return TrancieverResults.ERROR;
-        }
+        return result;
     }
 
     @Override
@@ -36,9 +45,9 @@ public class TaskTranciever extends Thread {//Gets number from tasks.tasks and s
             i = tasks.getTask();
             //System.out.println(i + " got from task list. Sent it to processing.");
             switch ( process(i) ){
-                case EVEN: tasks.addPrime(i);
+                case PRIME: tasks.addPrime(i);
                 break;
-                case ODD: tasks.addNotprime(i);
+                case NOTPRIME: tasks.addNotprime(i);
                 break;
                 default: tasks.addError(i);
             }

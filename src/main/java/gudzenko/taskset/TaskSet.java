@@ -108,7 +108,7 @@ public class TaskSet implements ITaskSet {
     }
 
     public long getTaskCount() {
-        return taskCount;
+        return primesCount + notPrimesCount + errorsCount;
     }
 
     public long getPrimesCount() {

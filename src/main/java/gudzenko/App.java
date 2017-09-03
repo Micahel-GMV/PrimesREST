@@ -23,7 +23,7 @@ public class App
         localExecutor.submit(new PrimesProcessor(tasks));
         localExecutor.submit(new NotprimesProcessor(tasks));
         localExecutor.submit(new ErrorsProcessor(tasks));
-        localExecutor.submit(new Statistics(tasks, 100000));
+        localExecutor.submit(new Statistics(tasks, 1000));
 
         ExecutorService restExecutor = Executors.newFixedThreadPool(MAX_TRANCIEVER_COUNT);
         for (int i = 0; i < MAX_TRANCIEVER_COUNT; i++) restExecutor.submit(new TaskTranciever(tasks));
