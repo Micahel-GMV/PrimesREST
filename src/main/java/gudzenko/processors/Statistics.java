@@ -36,8 +36,9 @@ public class Statistics extends Thread {
                 previousReported = taskCount;
                 curTime = System.currentTimeMillis();
                 timeDiff = curTime - previousTime;
-                System.out.print(diff + " tasks were sent for processing in " + timeDiff + " millis. ");
-                System.out.println("Performance is " + (1000*(double)diff/timeDiff) + " tasks/sec.");
+                System.out.print(diff + " tasks were processed in " + timeDiff + " millis. ");
+                System.out.print("Performance is " + (1000*(double)diff/timeDiff) + " tasks/sec. ");
+                System.out.println("Average performance is " + (1000*(double)taskCount/(curTime-startTime)) + " tasks/sec. ");
             }
         }
     }

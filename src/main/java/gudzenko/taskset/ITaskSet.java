@@ -1,13 +1,15 @@
 package gudzenko.taskset;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 public interface ITaskSet {
-    public void addTask(int value);
-    public int getTask();
-    public void addPrime(int value);
-    public int getPrime();
-    public void addNotprime(int value);
-    public int getNotprime();
-    public void addError(int value);
-    public int getError();
+    public void addTask(AtomicInteger value);
+    public AtomicInteger getTask();
+    public void addPrime(AtomicInteger value);
+    public AtomicInteger getPrime();
+    public void addNotprime(AtomicInteger value);
+    public AtomicInteger getNotprime();
+    public void addError(AtomicInteger value);
+    public AtomicInteger getError();
     public long getTaskCount();
 }
