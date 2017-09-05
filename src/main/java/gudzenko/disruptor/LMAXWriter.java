@@ -1,20 +1,18 @@
 package gudzenko.disruptor;
 
 import com.lmax.disruptor.ExceptionHandler;
-import com.lmax.disruptor.RingBuffer;
 import com.lmax.disruptor.dsl.Disruptor;
-import gudzenko.taskset.ITaskSet;
-import gudzenko.taskset.TaskSet;
+import gudzenko.taskset.ArrayBlockingTaskSet;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class LMAXWriter {
+/*
+    private ArrayBlockingTaskSet tasks;
 
-    private ITaskSet tasks;
-
-    public LMAXWriter(ITaskSet tasks){
+    public LMAXWriter(ArrayBlockingTaskSet tasks){
         this.tasks = tasks;
     }
 
@@ -27,9 +25,9 @@ public class LMAXWriter {
         this.ringBufferSize = ringBufferSize;
     }
 
-    /**
-     * Initialize the disruptor engine.
-     * */
+    //
+    // * Initialize the disruptor engine.
+    // *
     public void init() {
         // create a thread pool executor to be used by disruptor
         Executor executor = Executors.newCachedThreadPool();
@@ -92,5 +90,5 @@ public class LMAXWriter {
             // publish the messages via event producer
             writeEventProducer.onData(message);
         }
-    }
+    }*/
 }

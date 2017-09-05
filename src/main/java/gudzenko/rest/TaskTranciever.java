@@ -1,10 +1,14 @@
 package gudzenko.rest;
 
-import gudzenko.taskset.ITaskSet;
+import gudzenko.taskset.ArrayBlockingTaskSet;
 
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
+import gudzenko.taskset.ResultSet;
+import gudzenko.taskset.TaskSet;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -12,13 +16,16 @@ public class TaskTranciever extends Thread {//Gets number from tasks.tasks and s
                                             //http://api.mathjs.org/v1/?expr=isPrime(41), recievs answer and decides
                                             //which result set in tasks to be replenished with this number.
 
-    ITaskSet tasks;
+    private static Logger LOGGER = org.slf4j.LoggerFactory.getLogger(TaskTranciever.class);
+    private TaskSet tasks;
+    private ResultSet results;
 
-    public TaskTranciever(ITaskSet tasks){
+    public TaskTranciever(TaskSet tasks, ResultSet results) {
+        this.results = results;
         this.tasks = tasks;
     }
 
-    public TrancieverResults process(int i){
+    private TrancieverResults process(Integer i){
         TrancieverResults result = TrancieverResults.ERROR;
         try
         {
@@ -35,24 +42,21 @@ public class TaskTranciever extends Thread {//Gets number from tasks.tasks and s
                 else if (output.equals("false")) result = TrancieverResults.NOTPRIME;
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error("Tranciever error:\n" + e.getMessage());
         }
+        if (result == TrancieverResults.ERROR) tasks.add(i);
         return result;
     }
 
     @Override
     public void run(){
-        int i;
         while (!isInterrupted()){
-            i = tasks.getTask().get();
-            //System.out.println(i + " got from task list. Sent it to processing.");
-            switch ( process(i) ){
-                case PRIME: tasks.addPrime(new AtomicInteger(i));
-                break;
-                case NOTPRIME: tasks.addNotprime(new AtomicInteger(i));
-                break;
-                default: tasks.addError(new AtomicInteger(i));
+            try {
+                sleep(1);
+            } catch (InterruptedException e) {
+                LOGGER.error("Sleep in tranciever interrupted.");
             }
+            results.add(process(tasks.get()));
         }
     }
 }

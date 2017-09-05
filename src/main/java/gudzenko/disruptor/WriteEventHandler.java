@@ -5,15 +5,15 @@ import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import gudzenko.rest.TrancieverResults;
-import gudzenko.taskset.ITaskSet;
+import gudzenko.taskset.ArrayBlockingTaskSet;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class WriteEventHandler implements EventHandler<WriteEvent> {
+public class WriteEventHandler{// implements EventHandler<WriteEvent> {
+/*
+    private ArrayBlockingTaskSet tasks;
 
-    private ITaskSet tasks;
-
-    public WriteEventHandler(ITaskSet tasks){
+    public WriteEventHandler(ArrayBlockingTaskSet tasks){
         this.tasks = tasks;
     }
 
@@ -49,5 +49,5 @@ public class WriteEventHandler implements EventHandler<WriteEvent> {
                 default: tasks.addError(message);
             }
         }
-    }
+    }*/
 }
