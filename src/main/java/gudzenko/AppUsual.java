@@ -18,7 +18,7 @@ public class AppUsual {
     private static Logger LOGGER = org.slf4j.LoggerFactory.getLogger(AppUsual.class);
 
     public static void main(String[] args) {
-        final int MAX_TRANCIEVER_COUNT = 1000;
+        final int MAX_TRANCIEVER_COUNT = 4;
         final int QUEUE_CAPACITY = 100;
         final long REPORT_PERIOD = 10000;
 
